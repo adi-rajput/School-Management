@@ -9,6 +9,10 @@ dotenv.config({});
 const server = async () => {
   const app = express();
 
+  // Middlewares
+  // Enable trust proxy to correctly handle the X-Forwarded-For header
+  app.set('trust proxy', 1);
+
   // Middleware to parse incoming JSON requests
   app.use(bodyParser.json());
 
