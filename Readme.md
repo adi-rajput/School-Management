@@ -15,7 +15,6 @@ This is a Node.js and Express-based School Management System API that allows you
 - MySQL (using `mysql2` package)
 - Sequelize ORM
 - `express-rate-limit` for rate limiting
-- Redis (for caching, optional)
 
 ## Installation
 
