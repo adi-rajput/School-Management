@@ -11,7 +11,7 @@ const server = async () => {
 
   // Middlewares
   // Enable trust proxy to correctly handle the X-Forwarded-For header
-  app.set('trust proxy', 1);
+  app.set("trust proxy", 1);
 
   // Middleware to parse incoming JSON requests
   app.use(bodyParser.json());
@@ -23,12 +23,11 @@ const server = async () => {
   // Limits each IP to 100 requests per 15 minutes
   // Prevents abuse by users sending too many requests in a short period
   const limiter = rateLimit({
-    windowMs: 15 * 60 * 1000, 
-    max: 100, 
-    message: 'Too many requests, please try again later.',
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    message: "Too many requests, please try again later.",
   });
 
-  
   app.use(limiter);
 
   // Set the port for the server (default to 3000 if not specified in environment variables)
@@ -37,11 +36,18 @@ const server = async () => {
   // Routes for the school-related API endpoints
   app.use("/api/v1/school", schoolRoute);
 
+  app.get("/", (req, res) => {
+    return res.status(200).json({
+      message: "School API server is up and running...",
+      status: "ok",
+    });
+  });
+
   app.use((err, req, res, next) => {
     return res.status(404).json({
       error: "Route not found",
-    })
-  })
+    });
+  });
   app.listen(PORT, () => {
     console.log(`Server started at port ${PORT}`);
   });
