@@ -1,4 +1,5 @@
 const { School } = require("../models/index");
+const calculateDistance = require("../utils/school_sort")
 
 const createSchool = async (req, res) => {
   try {
@@ -30,4 +31,26 @@ const createSchool = async (req, res) => {
   }
 };
 
-module.exports = createSchool;
+const getSchoolByDistance= async (req, res) => {
+  try {
+    const { latitude, longitude } = req.query;
+    if (!latitude || !longitude) {
+      return res.status(400).json({ error: 'Please provide latitude and longitude' });
+    }
+
+    const schools = await School.findAll();
+
+    const schoolsWithDistance = schools.map(school => {
+      const distance = calculateDistance(latitude, longitude, school.latitude, school.longitude);
+      return { ...school.toJSON(), distance };
+    });
+
+    schoolsWithDistance.sort((a, b) => a.distance - b.distance);
+
+    res.json(schoolsWithDistance);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve schools' });
+  }
+};
+
+module.exports = {createSchool,getSchoolByDistance};
