@@ -32,7 +32,7 @@ This is a Node.js and Express-based School Management System API that allows you
 "development": {
 "username": <your_db_login_name>,
 "password": <your password>,
-"database": "flight_search_db",
+"database": "school_management_database",
 "host": "127.0.0.1",
 "dialect": "mysql"
 },
@@ -61,7 +61,7 @@ then execute
     "longitude": -74.0060
   }
 
-### 1. Create a School
+### 2. Get School by Shortest Distance
 
 - **URL:** `api/v1/school/listSchools?latitude=<user_latitude>&longitude=<user_longitude>`
 - **Method:** `GET`
