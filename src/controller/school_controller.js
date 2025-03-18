@@ -1,13 +1,9 @@
 const { School } = require("../models/index"); 
 const calculateDistance = require("../utils/school_sort"); 
 
-// Function to create a new school
 const createSchool = async (req, res) => {
   try {
-
     const { name, address, latitude, longitude } = req.body;
-
-    // Check if a school with the same name and address already exists
     const existingSchool = await School.findOne({ where: { name, address } });
 
     if (existingSchool) {
@@ -22,7 +18,6 @@ const createSchool = async (req, res) => {
       });
     }
 
-    // Create a new school in the database
     const school = await School.create({ name, address, latitude, longitude });
 
     res.status(201).json({
@@ -36,7 +31,6 @@ const createSchool = async (req, res) => {
   }
 };
 
-// Function to retrieve schools sorted by distance from a given location
 const getSchoolByDistance = async (req, res) => {
   try {
     const { latitude, longitude } = req.query;
@@ -47,19 +41,15 @@ const getSchoolByDistance = async (req, res) => {
 
     const schools = await School.findAll();
 
-    // Map through the schools to calculate their distance from the provided coordinates
     const schoolsWithDistance = schools.map(school => {
       const distance = calculateDistance(latitude, longitude, school.latitude, school.longitude);
-      return { ...school.toJSON(), distance }; // Return school data along with the calculated distance
+      return { ...school.toJSON(), distance };
     });
 
-    // Sort schools by distance
     schoolsWithDistance.sort((a, b) => a.distance - b.distance);
-
 
     res.json(schoolsWithDistance);
   } catch (error) {
-
     res.status(500).json({ error: 'Failed to retrieve schools' });
   }
 };
